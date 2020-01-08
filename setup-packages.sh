@@ -1,5 +1,7 @@
 #!/bin/sh
+# Update and upgrade system
 sudo apt update && sudo apt upgrade -y
+
 
 # Install zsh
 sudo apt install zsh powerline fonts-powerline git curl wget -y
@@ -108,17 +110,31 @@ source \$ZSH/oh-my-zsh.sh
 EOL
 chsh -s /bin/zsh
 
+
 # Install nmap
 sudo apt install nmap
 
+
+# Install searchsploit
+sudo git clone https://github.com/offensive-security/exploitdb.git /opt/exploit-database
+sudo ln -sf /opt/exploit-database/searchsploit /usr/local/bin/searchsploit
+cp -n /opt/exploit-database/.searchsploit_rc ~/
+export PATH=/usr/local/bin/searchsploit:$PATH
+
+
 # Install Apache, MySQL, PHP
 sudo apt-get install apache2 mysql-server php -y
+
 
 # Install
 git clone https://github.com/nahamsec/bbht.git
 cd bbht
 chmod +x install.sh
 ./install.sh
+cd ~
+export PATH=/usr/local/go/bin:$PATH
+export PATH=~/go/bin:$PATH
+
 
 # Install ffuf
 go get github.com/ffuf/ffuf

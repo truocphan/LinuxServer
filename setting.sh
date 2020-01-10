@@ -34,7 +34,6 @@ sudo apt update && sudo apt upgrade -y
 # Install zsh
 sudo apt install zsh powerline fonts-powerline git curl wget -y
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-# cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 cat > ~/.zshrc << EOL
 # If you come from bash you might have to change your $PATH.
 # export PATH=\$HOME/bin:/usr/local/bin:\$PATH

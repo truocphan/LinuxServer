@@ -138,8 +138,15 @@ EOL
 chsh -s /bin/zsh
 
 
-# Install nmap
-sudo apt install nmap
+# Install nmap, sqlmap, smbmap
+sudo apt install nmap, sqlmap, smbmap -y
+
+
+# Install metasploit
+curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall
+chmod 755 msfinstall
+./msfinstall
+rm msfinstall
 
 
 # Install searchsploit

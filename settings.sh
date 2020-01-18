@@ -1,210 +1,100 @@
 #!/bin/sh
-# Update and upgrade system
-apt update && sudo apt upgrade -y
+echo "[+] Update and upgrade system..."
+sudo apt update && sudo apt upgrade -y
 
 
-apt install -y openvpn git curl wget
+echo "[+] Installing ..."
+sudo apt install -y openssh-server openvpn git curl wget
 
 
+echo "[+] Setup rc.local..."
+sudo touch /etc/rc.local
+sudo chmod 777 /etc/rc.local
 sudo cat > /etc/rc.local << EOL
 #!/bin/sh -e
 IP=\$(ip -4 route get 8.8.8.8 | awk {'print \$7'}| tr -d '\n')
 Interface=\$(ip -4 route get 8.8.8.8 | awk {'print \$5'}| tr -d '\n')
 Gateway=\$(ip -4 route get 8.8.8.8 | awk {'print \$3'}| tr -d '\n')
-echo "\$(tput setaf 3)
-\$(hostnamectl)\n\n
-----------------------------------------------------\n
-        IP Address: \$IP\n
-        Gateway IP: \$Gateway\n
-         Interface: \$Interface\n
-          Username: truocphan\n
-          Password: TruocPhan\n
-----------------------------------------------------\n\n
-          Facebook: https://facebook.com/292706121240740\n
-            E-mail: truocphan112017@gmail.com\n
-            GitHub: https://github.com/truocphan\n\n
+echo "\$(tput setaf 3)\\
+\$(hostnamectl)\n\n\\
+----------------------------------------------------\n\\
+        IP Address: \$IP\n\\
+        Gateway IP: \$Gateway\n\\
+         Interface: \$Interface\n\\
+          Username: truocphan\n\\
+          Password: TruocPhan\n\\
+----------------------------------------------------\n\n\\
+          Facebook: https://facebook.com/292706121240740\n\\
+            E-mail: truocphan112017@gmail.com\n\\
+            GitHub: https://github.com/truocphan\n\n\\
 \$(tput sgr0)" > /etc/issue
 exit 0
 EOL
 
-chmod +x /etc/rc.local
+
+echo "[+] Changing Hostname..."
+sudo hostnamectl set-hostname TruocPhan-Server
 
 
-### Change Hostname
-hostnamectl set-hostname TruocPhan-Server
-hostnamectl
 
-
-# Setup banner ssh before login
-cat > /etc/issue.net << EOL
+echo "[+] Setup banner ssh before login..."
+sudo touch /etc/issue.net
+sudo chmod 777 /etc/issue.net
+sudo cat > /etc/issue.net << EOL
  _____                   ___ _
 |_   _| _ _  _ ___  __  | _ \ |_  __ _ _ _
-  | || '_| || / _ \/ _| |  _/ ' \/ _` | ' \
+  | || '_| || / _ \/ _| |  _/ ' \/ _' | ' \\
   |_||_|  \_,_\___/\__| |_| |_||_\__,_|_||_|
          ___
         / __| ___ _ ___ _____ _ _
         \__ \/ -_) '_\ V / -_) '_|
         |___/\___|_|  \_/\___|_|
+
 EOL
+sudo sed -i 's/#Banner none/Banner \/etc\/issue.net/g' /etc/ssh/sshd_config
 
 
-
-
-
-
-
-
-
-
-# vi /etc/ssh/sshd_config
-Banner /etc/issue.net
-
-
-
-
-
-
-
-
-
-# Install zsh
-sudo apt install zsh powerline fonts-powerline -y
+echo "[+] Installing zsh for root and current user..."
+sudo apt install -y zsh powerline fonts-powerline
+ls -a ~/ | grep -o .oh-my-zsh > /dev/null &&  rm -rf ~/.oh-my-zsh
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-cat > ~/.zshrc << EOL
-# If you come from bash you might have to change your $PATH.
-# export PATH=\$HOME/bin:/usr/local/bin:\$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH="/home/truocphan/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="bira"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
-source \$ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:\$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n \$SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-EOL
-chsh -s /bin/zsh
+sudo cp -r ~/.oh-my-zsh /root/.oh-my-zsh
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+sudo cp ~/.zshrc /root/.zshrc
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="bira"/g' ~/.zshrc
+sudo sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="bira"/g' /root/.zshrc
+chsh -s $(which zsh)
+sudo chsh -s $(which zsh)
 
 
-# Install nmap, sqlmap, smbmap
-sudo apt install nmap, sqlmap, smbmap -y
+echo "[+] Installing nmap, sqlmap, smbmap..."
+sudo apt install -y nmap sqlmap smbmap
 
 
-# Install metasploit
-curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall
-chmod 755 msfinstall
-./msfinstall
-rm msfinstall
+echo "[+] Installing Apache, MySQL, PHP..."
+sudo apt install -y apache2 mysql-server php
 
 
-# Install searchsploit
-sudo git clone https://github.com/offensive-security/exploitdb.git /opt/exploit-database
-sudo ln -sf /opt/exploit-database/searchsploit /usr/local/bin/searchsploit
-cp -n /opt/exploit-database/.searchsploit_rc ~/
-export PATH=/usr/local/bin/searchsploit:$PATH
+echo "[+] Installing metasploit..."
+which msfconsole | grep -o msfconsole > /dev/null &&  echo "Metasploit is installed!" || (curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && chmod 755 msfinstall && ./msfinstall && rm msfinstall)
 
 
-# Install Apache, MySQL, PHP
-sudo apt-get install apache2 mysql-server php -y
+echo "[+] Installing searchsploit..."
+which searchsploit | grep -o searchsploit > /dev/null && echo "Searchsploit is installed!" || (sudo git clone https://github.com/offensive-security/exploitdb.git /opt/exploit-database && sudo ln -sf /opt/exploit-database/searchsploit /usr/local/bin/searchsploit && sudo cp -n /opt/exploit-database/.searchsploit_rc ~/ && echo 'export PATH=/usr/local/bin/searchsploit:$PATH' >> ~/.bash_profile && source ~/.bash_profile)
 
 
-# Install
-git clone https://github.com/nahamsec/bbht.git
-cd bbht
-chmod +x install.sh
-./install.sh
-cd ~
-export PATH=/usr/local/go/bin:$PATH
-export PATH=~/go/bin:$PATH
+echo "[+] Installing Golang..."
+wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz
+tar -xvf go1.13.4.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go 
+sudo mv go /usr/local
+sed -i -z 's/export GOROOT=.*\nexport GOPATH=.*\nexport PATH=.*\n//g' ~/.bash_profile
+echo "export GOROOT=/usr/local/go" >> ~/.bash_profile
+echo "export GOPATH=$HOME/go" >> ~/.bash_profile
+echo "export PATH=$GOPATH/bin:$GOROOT/bin:$PATH" >> ~/.bash_profile
+source ~/.bash_profile
+rm go1.13.4.linux-amd64.tar.gz
 
 
-# Install ffuf
+echo "[+] Installing ffuf..."
 go get github.com/ffuf/ffuf

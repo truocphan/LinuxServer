@@ -31,8 +31,11 @@
 sudo apt update && sudo apt upgrade -y
 
 
+sudo apt install -y openvpn git curl wget
+
+
 # Install zsh
-sudo apt install zsh powerline fonts-powerline git curl wget -y
+sudo apt install zsh powerline fonts-powerline -y
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 cat > ~/.zshrc << EOL
 # If you come from bash you might have to change your $PATH.

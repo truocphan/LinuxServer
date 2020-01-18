@@ -86,8 +86,10 @@ which searchsploit | grep -o searchsploit > /dev/null && echo "Searchsploit is i
 echo "[+] Installing Golang..."
 wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz
 tar -xvf go1.13.4.linux-amd64.tar.gz
-sudo rm -rf /usr/local/go 
+sudo rm -rf /usr/local/go
 sudo mv go /usr/local
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
 sed -i -z 's/export GOROOT=.*\nexport GOPATH=.*\nexport PATH=.*\n//g' ~/.bash_profile
 echo "export GOROOT=/usr/local/go" >> ~/.bash_profile
 echo "export GOPATH=$HOME/go" >> ~/.bash_profile
@@ -98,3 +100,5 @@ rm go1.13.4.linux-amd64.tar.gz
 
 echo "[+] Installing ffuf..."
 go get github.com/ffuf/ffuf
+
+sudo reboot

@@ -80,7 +80,7 @@ which msfconsole | grep -o msfconsole > /dev/null &&  echo "Metasploit is instal
 
 
 echo "[+] Installing searchsploit..."
-which searchsploit | grep -o searchsploit > /dev/null && echo "Searchsploit is installed!" || (sudo git clone https://github.com/offensive-security/exploitdb.git /opt/exploit-database && sudo ln -sf /opt/exploit-database/searchsploit /usr/local/bin/searchsploit && sudo cp -n /opt/exploit-database/.searchsploit_rc ~/ && echo 'export PATH=/usr/local/bin/searchsploit:$PATH' >> ~/.bash_profile && source ~/.bash_profile)
+which searchsploit | grep -o searchsploit > /dev/null && echo "Searchsploit is installed!" || (sudo git clone https://github.com/offensive-security/exploitdb.git /opt/exploit-database && sudo ln -sf /opt/exploit-database/searchsploit /usr/local/bin/searchsploit && sudo cp -n /opt/exploit-database/.searchsploit_rc ~/ && sed -i -z 's/export PATH=.*\/usr\/local\/bin\/searchsploit.*\n//g' ~/.bash_profile && echo 'export PATH=/usr/local/bin/searchsploit:$PATH' >> ~/.bash_profile && source ~/.bash_profile)
 
 
 echo "[+] Installing Golang..."

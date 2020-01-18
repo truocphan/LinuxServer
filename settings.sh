@@ -1,37 +1,70 @@
-### sudo vi /etc/rc.local
-#### sudo chmod +x /ect/rc.local
-##!/bin/sh -e
-#
-#IP=$(ip -4 route get 8.8.8.8 | awk {'print $7'}| tr -d '\n')
-#Interface=$(ip -4 route get 8.8.8.8 | awk {'print $5'}| tr -d '\n')
-#Gateway=$(ip -4 route get 8.8.8.8 | awk {'print $3'}| tr -d '\n')
-#echo "$(tput setaf 3)\
-#$(hostnamectl)\n\n\
-#----------------------------------------------------\n\
-#        IP Address: $IP\n\
-#        Gateway IP: $Gateway\n\
-#         Interface: $Interface\n\
-#          Username: truocphan\n\
-#          Password: TruocPhan\n\
-#----------------------------------------------------\n\n\
-#          Facebook: https://facebook.com/292706121240740\n\
-#            E-mail: truocphan112017@gmail.com\n\
-#            GitHub: https://github.com/truocphan\n\n\
-#$(tput sgr0)" > /etc/issue
-#exit 0
+#!/bin/sh
+# Update and upgrade system
+apt update && sudo apt upgrade -y
+
+
+apt install -y openvpn git curl wget
+
+
+sudo cat > /etc/rc.local << EOL
+#!/bin/sh -e
+IP=\$(ip -4 route get 8.8.8.8 | awk {'print \$7'}| tr -d '\n')
+Interface=\$(ip -4 route get 8.8.8.8 | awk {'print \$5'}| tr -d '\n')
+Gateway=\$(ip -4 route get 8.8.8.8 | awk {'print \$3'}| tr -d '\n')
+echo "\$(tput setaf 3)
+\$(hostnamectl)\n\n
+----------------------------------------------------\n
+        IP Address: \$IP\n
+        Gateway IP: \$Gateway\n
+         Interface: \$Interface\n
+          Username: truocphan\n
+          Password: TruocPhan\n
+----------------------------------------------------\n\n
+          Facebook: https://facebook.com/292706121240740\n
+            E-mail: truocphan112017@gmail.com\n
+            GitHub: https://github.com/truocphan\n\n
+\$(tput sgr0)" > /etc/issue
+exit 0
+EOL
+
+chmod +x /etc/rc.local
 
 
 ### Change Hostname
-#sudo hostnamectl set-hostname TruocPhan-Server
-#hostnamectl
+hostnamectl set-hostname TruocPhan-Server
+hostnamectl
 
 
-#!/bin/sh
-# Update and upgrade system
-sudo apt update && sudo apt upgrade -y
+# Setup banner ssh before login
+cat > /etc/issue.net << EOL
+ _____                   ___ _
+|_   _| _ _  _ ___  __  | _ \ |_  __ _ _ _
+  | || '_| || / _ \/ _| |  _/ ' \/ _` | ' \
+  |_||_|  \_,_\___/\__| |_| |_||_\__,_|_||_|
+         ___
+        / __| ___ _ ___ _____ _ _
+        \__ \/ -_) '_\ V / -_) '_|
+        |___/\___|_|  \_/\___|_|
+EOL
 
 
-sudo apt install -y openvpn git curl wget
+
+
+
+
+
+
+
+
+# vi /etc/ssh/sshd_config
+Banner /etc/issue.net
+
+
+
+
+
+
+
 
 
 # Install zsh

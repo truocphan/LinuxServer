@@ -96,4 +96,23 @@ echo "[+] Installing ffuf..."
 go get github.com/ffuf/ffuf
 sudo ln -s ~/go/bin/ffuf /bin/ffuf
 
+
+echo "[+] Downloading Wordlists..."
+sudo mkdir /usr/share/wordlists
+sudo git clone https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
+wget https://raw.githubusercontent.com/praetorian-code/Hob0Rules/master/wordlists/rockyou.txt.gz
+gunzip rockyou.txt.gz
+sudo mv rockyou.txt /usr/share/wordlists
+sudo apt install dirb
+sudo git clone https://github.com/maurosoria/dirsearch.git /opt/dirsearch
+sudo ln -sf /opt/dirsearch
+
+
+
+echo "[+] Installing Sublist3r"
+sudo git clone https://github.com/aboul3la/Sublist3r.git /opt/Sublist3r
+cd /opt/Sublist3r
+sudo pip install -r requirements.txt
+
+
 sudo reboot

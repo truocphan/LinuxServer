@@ -75,13 +75,6 @@ echo "[+] Installing Apache, MySQL, PHP..."
 sudo apt install -y apache2 mysql-server php
 
 
-echo "[+] Installing metasploit..."
-which msfconsole | grep -o msfconsole > /dev/null &&  echo "Metasploit is installed!" || (curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && chmod 755 msfinstall && ./msfinstall && rm msfinstall)
-
-
-echo "[+] Installing searchsploit..."
-which searchsploit | grep -o searchsploit > /dev/null && echo "Searchsploit is installed!" || (sudo git clone https://github.com/offensive-security/exploitdb.git /opt/exploit-database && sudo ln -sf /opt/exploit-database/searchsploit /usr/local/bin/searchsploit && sudo cp -n /opt/exploit-database/.searchsploit_rc ~/)
-
 
 echo "[+] Installing Golang..."
 wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz
@@ -92,9 +85,14 @@ rm go1.13.4.linux-amd64.tar.gz
 sudo ln -s /opt/go/bin/go /usr/local/bin/go
 
 
-echo "[+] Installing ffuf..."
-go get github.com/ffuf/ffuf
-sudo ln -s ~/go/bin/ffuf /bin/ffuf
+
+echo "[+] Installing metasploit..."
+which msfconsole | grep -o msfconsole > /dev/null &&  echo "Metasploit is installed!" || (curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && chmod 755 msfinstall && ./msfinstall && rm msfinstall)
+
+
+echo "[+] Installing searchsploit..."
+which searchsploit | grep -o searchsploit > /dev/null && echo "Searchsploit is installed!" || (sudo git clone https://github.com/offensive-security/exploitdb.git /opt/exploit-database && sudo ln -sf /opt/exploit-database/searchsploit /usr/local/bin/searchsploit && sudo cp -n /opt/exploit-database/.searchsploit_rc ~/)
+
 
 
 echo "[+] Downloading Wordlists..."

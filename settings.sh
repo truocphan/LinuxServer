@@ -54,17 +54,13 @@ EOL
 sudo sed -i 's/#Banner none/Banner \/etc\/issue.net/g' /etc/ssh/sshd_config
 
 
-echo "[+] Installing zsh for root and current user..."
+echo "[+] Installing zsh for current user..."
 sudo apt install -y zsh powerline fonts-powerline
 ls -a ~/ | grep -o .oh-my-zsh > /dev/null &&  rm -rf ~/.oh-my-zsh
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-sudo cp -r ~/.oh-my-zsh /root/.oh-my-zsh
 cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-sudo cp ~/.zshrc /root/.zshrc
 sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="bira"/g' ~/.zshrc
-sudo sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="bira"/g' /root/.zshrc
 chsh -s $(which zsh)
-sudo chsh -s $(which zsh)
 
 
 echo "[+] Installing nmap, sqlmap, smbmap..."

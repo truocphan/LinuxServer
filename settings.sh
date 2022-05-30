@@ -1,4 +1,7 @@
 #!/bin/sh
+# sudo adduser truocphan
+# sudo usermod -aG sudo truocphan
+# sudo deluser --remove-all-files username
 echo "[+] Update and upgrade system..."
 sudo apt update && sudo apt upgrade -y
 
